@@ -1,0 +1,14 @@
+{
+    "name": "svi/crud",
+    "description": "CRUD bundle for svi framework",
+    "license": "MIT",
+    "require": {
+        "svi/http": ">=1.0",
+        "svi/file": ">=1.0"
+    },
+    "autoload": {
+        "psr-4" : {
+            "Svi\\CrudBundle\\" : ""
+        }
+    }
+}
