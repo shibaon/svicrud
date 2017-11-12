@@ -625,16 +625,7 @@ abstract class CrudController extends Controller
 
     private function addTwigPath()
     {
-        $this->app->getTemplateService();
-
-        if (!isset($app[Bundle::class . '__TwigLoaderAdded'])) {
-            if (isset($this->app['twig']) && $this->app['twig']) {
-                /** @var \Twig_Loader_Filesystem $loader */
-                $loader = $this->app['twig']->getLoader();
-                $loader->addPath($this->app[Bundle::class]->getDir());
-                $app[Bundle::class . '__TwigLoaderAdded'] = true;
-            }
-        }
+        $this->getTemplateService()->addLoadPath($this->app[Bundle::class]->getDir());
     }
 
 }
