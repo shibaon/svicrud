@@ -15,6 +15,7 @@ use Svi\HttpBundle\Utils\Paginator;
 use Svi\HttpBundle\Utils\Sorter;
 use Svi\OrmBundle\Entity;
 use Svi\OrmBundle\Manager;
+use Svi\TengineBundle\Service\TemplateService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 abstract class CrudController extends Controller
@@ -508,91 +509,91 @@ abstract class CrudController extends Controller
 
     protected function getDeleteTemplate()
     {
-        $this->addTwigPath();
+        $this->addTemplatePath();
 
         return 'Views/delete.twig';
     }
 
     protected function getEditTemplate()
     {
-        $this->addTwigPath();
+        $this->addTemplatePath();
 
         return 'Views/edit.twig';
     }
 
     protected function getFieldsTemplate()
     {
-        $this->addTwigPath();
+        $this->addTemplatePath();
 
         return 'Views/fields.twig';
     }
 
     protected function getFilterFieldsTemplate()
     {
-        $this->addTwigPath();
+        $this->addTemplatePath();
 
         return 'Views/filter_fields.twig';
     }
 
     protected function getIndexTemplate()
     {
-        $this->addTwigPath();
+        $this->addTemplatePath();
 
         return 'Views/index.twig';
     }
 
     protected function getPaginatorTemplate()
     {
-        $this->addTwigPath();
+        $this->addTemplatePath();
 
         return 'Views/paginator.twig';
     }
 
     protected function getSortableTemplate()
     {
-        $this->addTwigPath();
+        $this->addTemplatePath();
 
         return 'Views/sortable.twig';
     }
 
     protected function getSortableItemsTemplate()
     {
-        $this->addTwigPath();
+        $this->addTemplatePath();
 
         return 'Views/subitems.twig';
     }
 
     protected function getTableTemplate()
     {
-        $this->addTwigPath();
+        $this->addTemplatePath();
 
         return 'Views/table.twig';
     }
 
     protected function getFieldTemplate()
     {
-        $this->addTwigPath();
+        $this->addTemplatePath();
 
         return 'Views/table_field.twig';
     }
 
     protected function getEntityIdFieldName()
     {
-        $this->addTwigPath();
+        $this->addTemplatePath();
 
         return $this->getManager()->getIdFieldName();
     }
 
     protected function getEntityIdColumnName()
     {
-        $this->addTwigPath();
+        $this->addTemplatePath();
 
         return $this->getManager()->getIdColumnName();
     }
 
     protected function crudRedirect($url = NULL)
     {
-        $this->addTwigPath();
+        $this->addTemplatePath();
 
         return $this->redirectToUrl($this->getBackLink($url));
     }
@@ -623,7 +624,7 @@ abstract class CrudController extends Controller
         return [];
     }
 
-    private function addTwigPath()
+    private function addTemplatePath()
     {
         $this->getTemplateService()->addLoadPath($this->app[Bundle::class]->getDir());
     }
