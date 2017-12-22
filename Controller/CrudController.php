@@ -48,7 +48,7 @@ abstract class CrudController extends Controller
             ];
         }
 
-        $sorter = new Sorter($sortableColumns, $this->getRequest());
+        $sorter = $this->getSorter($sortableColumns);
         $sorter->processColumns($templateTable['columns']);
 
         $db = $this->getManager()->getConnection()->createQueryBuilder()
@@ -88,13 +88,14 @@ abstract class CrudController extends Controller
 
         return $this->render($this->getIndexTemplate(), $this->getTemplateParameters(array(
             'data' => array(
-                'filter'     => $filter,
-                'add'        => isset($routes['add']) ? $routes['add'] : null,
-                'pages'      => $paginator ? $paginator->getView() : false,
-                'sorter'     => $sorter,
-                'table'      => $templateTable,
-                'title'      => $this->getIndexTitle() ? $this->getIndexTitle() : 'crud.title.list' . str_replace('\\', '', $this->getManager()->getEntityClassName()),
-                'tableClass' => str_replace('\\', '', $this->getManager()->getEntityClassName()),
+                'filter'      => $filter,
+                'add'         => isset($routes['add']) ? $routes['add'] : null,
+                'pages'       => $paginator ? $paginator->getView() : false,
+                'sorter'      => $sorter,
+                'table'       => $templateTable,
+                'title'       => $this->getIndexTitle() ? $this->getIndexTitle() : 'crud.title.list' . str_replace('\\', '', $this->getManager()->getEntityClassName()),
+                'tableClass'  => str_replace('\\', '', $this->getManager()->getEntityClassName()),
+                'idFieldName' => $this->getEntityIdFieldName(),
             ),
         )));
     }
@@ -247,8 +248,8 @@ abstract class CrudController extends Controller
                 $col['colTitle'] = is_string($value) ? $value : @$value['title'];
                 $item[$key] = $col;
             }
-            if (!isset($item['id'])) {
-                $item['id'] = array('type' => 'string', 'value' => $this->getManager()->getFieldValue($i, $this->getEntityIdFieldName()), 'hide' => true, 'notForPrint' => true);
+            if (!isset($item[$this->getEntityIdFieldName()])) {
+                $item[$this->getEntityIdFieldName()] = ['type' => 'string', 'idValue' => $this->getManager()->getFieldValue($i, $this->getEntityIdFieldName()), 'hide' => true, 'notForPrint' => true];
             }
             if ($this->getManager()->implementsInterface(NestedSortableInterface::class)) {
                 /** @var NestedSortableInterface|Entity $i */
@@ -277,14 +278,15 @@ abstract class CrudController extends Controller
         }
 
         return $this->render($this->getSortableTemplate(), $this->getTemplateParameters(array(
-            'items'  => $items,
-            'routes' => [
+            'items'       => $items,
+            'routes'      => [
                 'add'    => isset($routes['add']) ? $routes['add'] : null,
                 'delete' => isset($routes['delete']) ? $routes['delete'] : null,
                 'edit'   => isset($routes['edit']) ? $routes['edit'] : null,
             ],
-            'nested' => $this->getManager()->implementsInterface(NestedSortableInterface::class),
-            'filter' => $filter,
+            'nested'      => $this->getManager()->implementsInterface(NestedSortableInterface::class),
+            'filter'      => $filter,
+            'idFieldName' => $this->getEntityIdFieldName(),
         )));
     }
 
@@ -293,7 +295,7 @@ abstract class CrudController extends Controller
         $data = $this->getRequest()->request->all();
         if (!isset($data['weights'])) {
             return new JsonResponse([
-                'error' => true,
+                'error'        => true,
                 'errorMessage' => 'Weights parameters is not specified',
             ]);
         }
@@ -314,7 +316,7 @@ abstract class CrudController extends Controller
         }
 
         return new JsonResponse([
-            'error' => false,
+            'error'   => false,
             'weights' => $data['weights'],
         ]);
     }
@@ -453,7 +455,7 @@ abstract class CrudController extends Controller
             }
             if (!isset($row[$this->getEntityIdFieldName()])) {
                 $row[$this->getEntityIdFieldName()] =
-                    array('type' => 'string', 'value' => $this->getManager()->getFieldValue($i, $this->getEntityIdFieldName()), 'hide' => true);
+                    ['type' => 'string', 'idValue' => $this->getManager()->getFieldValue($i, $this->getEntityIdFieldName()), 'hide' => true];
             }
             $rows[] = $row;
         }
@@ -482,6 +484,9 @@ abstract class CrudController extends Controller
             }
         } else if (isset($value['type']) && $value['type'] == 'actions') {
             $value['entity'] = $item;
+        }
+        if ($this->getEntityIdFieldName() === $key) {
+            $value['idValue'] = $this->getManager()->getFieldValue($item, $key);
         }
 
         return $value;
@@ -627,6 +632,11 @@ abstract class CrudController extends Controller
     private function addTemplatePath()
     {
         $this->getTemplateService()->addLoadPath($this->app[Bundle::class]->getDir());
+    }
+
+    protected function getSorter(array $sortableColumns)
+    {
+        return new Sorter($sortableColumns, $this->getRequest());
     }
 
 }
