@@ -250,6 +250,7 @@ abstract class CrudController extends Controller
             }
             if (!isset($item[$this->getEntityIdFieldName()])) {
                 $item[$this->getEntityIdFieldName()] = ['type' => 'string', 'idValue' => $this->getManager()->getFieldValue($i, $this->getEntityIdFieldName()), 'hide' => true, 'notForPrint' => true];
+                $item[$this->getEntityIdFieldName()]['value'] = $item[$this->getEntityIdFieldName()]['idValue'];
             }
             if ($this->getManager()->implementsInterface(NestedSortableInterface::class)) {
                 /** @var NestedSortableInterface|Entity $i */
