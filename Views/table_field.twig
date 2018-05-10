@@ -7,5 +7,5 @@
 {% elseif col.type is same as('image') %}
 	<img src="{{ col.value }}" alt="" />
 {% elseif col.type is same as('link') %}
-	<a {% if col.title %}title="{{ col.title }}"{% endif %}href="{{ col.href }}">{{ col.value }}</a>
+	<a {% if col.blank %}target="_blank" {% endif %}{% if col.title %}title="{{ col.title }}"{% endif %}href="{{ col.href }}">{{ col.value }}</a>
 {% endif %}
