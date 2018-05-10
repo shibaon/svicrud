@@ -1,5 +1,7 @@
 {% if col.type is same as('actions') %}
 	{% include col.template with {entity:col.entity} %}
+{% elseif col.type is same as('template') %}
+	{% include col.template with col.value %}
 {% elseif col.type is same as('string') %}
 	{% if col.raw %}{{ col.value|raw }}{% else %}{{ col.value }}{% endif %}
 {% elseif col.type is same as('boolean') %}

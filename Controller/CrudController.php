@@ -469,9 +469,14 @@ abstract class CrudController extends Controller
         $value = is_string($column) ? NULL : (isset($column['value']) ? $column['value'] : null);
         if (!is_string($column) && isset($column['type']) && $column['type'] == 'actions') {
             $value = $column;
-        } else if ($value === NULL) {
+        } elseif (!is_string($column) && isset($column['type']) && $column['type'] == 'template') {
+            $value = $column;
+            if (isset($value['value']) && is_callable($value['value'])) {
+                $value['value'] = $value['value']($item);
+            }
+        } elseif ($value === NULL) {
             $value = $this->getManager()->getFieldValue($item, $key);
-        } else if (is_callable($value)) {
+        } elseif (is_callable($value)) {
             $value = $value($item);
         }
         if (is_object($value)) {
@@ -483,7 +488,7 @@ abstract class CrudController extends Controller
             } else {
                 $value = array('type' => 'string', 'value' => $value);
             }
-        } else if (isset($value['type']) && $value['type'] == 'actions') {
+        } elseif (isset($value['type']) && $value['type'] == 'actions') {
             $value['entity'] = $item;
         }
         if ($this->getEntityIdFieldName() === $key) {
