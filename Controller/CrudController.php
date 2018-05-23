@@ -56,6 +56,7 @@ abstract class CrudController extends Controller
             ->from($this->getManager()->getTableName(), 'e');
 
         $filter = $this->createForm(['method' => 'get']);
+        $filter->setTemplatesPath('svi/crud/Views/Filter');
         $filter->setMethod('get');
         $filter->setId('filter');
         $this->buildFilter($filter);
@@ -219,6 +220,7 @@ abstract class CrudController extends Controller
             ->orderBy('weight', 'asc');
 
         $filter = $this->createForm(['method' => 'get']);
+        $filter->setTemplatesPath('svi/crud/Views/Filter');
         $filter->setMethod('get');
         $this->buildFilter($filter);
         if (count($filter->getFields()) == 0) {
@@ -520,92 +522,66 @@ abstract class CrudController extends Controller
 
     protected function getDeleteTemplate()
     {
-        $this->addTemplatePath();
-
-        return 'Views/delete.twig';
+        return 'svi/crud/Views/delete.twig';
     }
 
     protected function getEditTemplate()
     {
-        $this->addTemplatePath();
-
-        return 'Views/edit.twig';
+        return 'svi/crud/Views/edit.twig';
     }
 
     protected function getFieldsTemplate()
     {
-        $this->addTemplatePath();
-
-        return 'Views/fields.twig';
+        return 'svi/crud/Views/fields.twig';
     }
 
     protected function getFilterFieldsTemplate()
     {
-        $this->addTemplatePath();
-
-        return 'Views/filter_fields.twig';
+        return 'svi/crud/Views/filter_fields.twig';
     }
 
     protected function getIndexTemplate()
     {
-        $this->addTemplatePath();
-
-        return 'Views/index.twig';
+        return 'svi/crud/Views/index.twig';
     }
 
     protected function getPaginatorTemplate()
     {
-        $this->addTemplatePath();
-
-        return 'Views/paginator.twig';
+        return 'svi/crud/Views/paginator.twig';
     }
 
     protected function getSortableTemplate()
     {
-        $this->addTemplatePath();
-
-        return 'Views/sortable.twig';
+        return 'svi/crud/Views/sortable.twig';
     }
 
     protected function getSortableItemsTemplate()
     {
-        $this->addTemplatePath();
-
-        return 'Views/subitems.twig';
+        return 'svi/crud/Views/subitems.twig';
     }
 
     protected function getTableTemplate()
     {
-        $this->addTemplatePath();
-
-        return 'Views/table.twig';
+        return 'svi/crud/Views/table.twig';
     }
 
     protected function getFieldTemplate()
     {
-        $this->addTemplatePath();
-
-        return 'Views/table_field.twig';
+        return 'svi/crud/Views/table_field.twig';
     }
 
     protected function getEntityIdFieldName()
     {
-        $this->addTemplatePath();
-
         return $this->getManager()->getIdFieldName();
     }
 
     protected function getEntityIdColumnName()
     {
-        $this->addTemplatePath();
-
         return $this->getManager()->getIdColumnName();
     }
 
     protected function crudRedirect($url = NULL)
     {
-        $this->addTemplatePath();
-
         return $this->redirectToUrl($this->getBackLink($url));
     }
 
@@ -633,11 +609,6 @@ abstract class CrudController extends Controller
     protected function getEditTemplateParameters($add = false)
     {
         return [];
-    }
-
-    private function addTemplatePath()
-    {
-        $this->getTemplateService()->addLoadPath($this->app[Bundle::class]->getDir());
     }
 
     protected function getSorter(array $sortableColumns)

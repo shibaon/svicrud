@@ -15,7 +15,7 @@ ul.sortable .srtItem {
 ul.sortable > li:hover {
 	background:#ffffdd;
 }
-ul.sortable .glyphicon-move {
+ul.sortable .oi-move {
 	cursor:move;
 	float:left;
 	margin-left:6px;
@@ -24,7 +24,7 @@ ul.sortable .glyphicon-move {
 	color:#666;
 	margin-right:8px;
 }
-ul.sortable .glyphicon-move:hover {
+ul.sortable .oi-move:hover {
 	color:#333;
 }
 ul.sortable ul {

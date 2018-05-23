@@ -15,7 +15,7 @@ $.fn.crudSortable = function(){
 			axis:'y',
 			cursor:'move',
 			items:'li',
-			handle:'.glyphicon-move',
+			handle:'.oi-move',
 			stop:function(){
 				var weights = [];
 				container.find('li').each(function(index){
@@ -49,7 +49,7 @@ $.fn.crudSortable = function(){
 		if (container.hasClass('nested')) {
 			container.nestedSortable($.extend(params, {
 				listType:'ul',
-				toleranceElement:'.glyphicon-move',
+				toleranceElement:'.oi-move',
 				axis:false
 			}));
 		} else {

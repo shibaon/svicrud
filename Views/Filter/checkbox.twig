@@ -1,0 +1,8 @@
+<div class="form-group">
+	<div class="col-sm">
+		<div class="checkbox">
+			<input type="checkbox" id="{{ id }}" name="{{ name }}" {% if placeholder %}placeholder="{{ placeholder }}"{% endif %} {% if required %}required="1"{% endif %} {% if data %}checked{% endif %} {% if attr %}{% for k, v in attr %}{{ k }}="{{ v }}" {% endfor %}{% endif %}>
+			<label for="{{ name }}">{{ label|trans }}</label>
+		</div>
+	</div>
+</div>

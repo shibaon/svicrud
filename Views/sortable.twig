@@ -33,7 +33,7 @@
 		{% if filter %}<div class="fcTable"><div class="fctInner">{% endif %}
 
 			{% if routes.add %}
-				<p class="clearfix"><a class="pull-right btn btn-info" href="{{ path(routes.add) }}?back={{ getRequestUri()|url_encode }}"><b class="glyphicon glyphicon-plus"></b> {{ 'crud.add'|trans }}</a></p>
+				<p class="clearfix"><a class="float-right btn btn-info" href="{{ path(routes.add) }}?back={{ getRequestUri()|url_encode }}"><b class="oi oi-plus"></b> {{ 'crud.add'|trans }}</a></p>
 			{% endif %}
 
 			<ul class="sortable {{ className }}{% if nested %} nested{% endif %}">
